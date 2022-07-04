@@ -20,24 +20,26 @@ function formatDate(date: Date) {
 }
 
 interface Chart {
-    time: string;
-    detail: {
+
+    [time: string] : 
+    ChartDetails
+}
+
+interface ChartDetails {
         open: string;
         high: string;
         low: string;
         close: string;
-    };
 }
+var obj: Chart = {}
 
-let array: Array<any> = []
-let temp:Chart = {
-    time: "",
-    detail: {
-        open: "",
-        high: "",
-        low: "",
-        close: ""  
-    }  
+var array: Array<Chart> = []
+
+let temp: ChartDetails = {
+    open: " ",
+    high: " ",
+    low: " ",
+    close: " "
 }
 
 axios.get('https://api1.binance.com/api/v3/klines?interval=1h&symbol=BTCUSDT')
@@ -45,26 +47,30 @@ axios.get('https://api1.binance.com/api/v3/klines?interval=1h&symbol=BTCUSDT')
     const element:[][] = response.data;
     for(let item1 in element){
         for(let item2 in element[item1]){
+            var key
             switch(Number(item2)){
                 case 0 : 
-                    temp.time = formatDate(new Date(element[item1][item2]))
+                    key = formatDate(new Date(element[item1][item2]))
                 case 1 : 
-                    temp.detail.open = String(element[item1][item2])
+                    temp.open = String(element[item1][item2])
                 case 2 : 
-                    temp.detail.high = String(element[item1][item2])
+                    temp.high = String(element[item1][item2])
                 case 3 : 
-                    temp.detail.low = String(element[item1][item2])
+                    temp.low = String(element[item1][item2])
                 case 4 : 
-                    temp.detail.close = String(element[item1][item2])
+                    temp.close = String(element[item1][item2])
                 default : break
             }
-            array.push(temp)
+            obj = {
+                [String(key)]: temp
+            }
+            array.push(obj)
             
-        }   
+        } 
     }
     console.log(array)
+
 })
 .catch(function (error) {
       console.log(error);
     })
-
