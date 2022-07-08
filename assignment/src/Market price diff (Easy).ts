@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const TakeDiff = async () => {
+const main = async () => {
   const resFtx = await fetch('https://ftx.com/api/markets/BTC/USDT');
   const resBinance = await fetch('https://api1.binance.com/api/v3/avgPrice?symbol=BTCUSDT');
 
@@ -21,4 +21,4 @@ const TakeDiff = async () => {
   );
 };
 
-TakeDiff();
+main();
